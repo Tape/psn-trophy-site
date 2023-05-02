@@ -5,18 +5,45 @@ plugins {
 group = 'org.openpsn'
 version = '0.1.0-SNAPSHOT'
 
+sourceSets {
+    integrationTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    integrationTestImplementation.extendsFrom implementation
+}
+
+tasks.register('integrationTest', Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    shouldRunAfter test
+}
+
+check.dependsOn integrationTest
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+    // Always re-run tests
+    outputs.upToDateWhen { false }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
+    testImplementation platform(libs.junit.bom)
+    testImplementation libs.junit.jupiter
 
-test {
-    useJUnitPlatform()
+    integrationTestImplementation platform(libs.junit.bom)
+    integrationTestImplementation libs.junit.jupiter
 }
