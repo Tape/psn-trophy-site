@@ -4,4 +4,8 @@ plugins {
 
 dependencies {
     implementation libs.jackson.databind
+
+    integrationTestImplementation libs.testcontainers.core
+    integrationTestImplementation libs.testcontainers.mockserver
+    integrationTestImplementation libs.mockserver.client
 }
