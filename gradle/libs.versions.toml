@@ -2,6 +2,7 @@
 jackson = "2.15.0"
 junit = "5.9.1"
 lombok = "1.18.26"
+mockito = "5.3.1"
 mockserver = "5.15.0"
 testcontainers = "1.18.0"
 
@@ -12,6 +13,8 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 # JUnit
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+mockito-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockito" }
 
 # Test containers
 mockserver-client = { module = "org.mock-server:mockserver-client-java", version.ref = "mockserver" }

@@ -43,7 +43,11 @@ dependencies {
 
     testImplementation platform(libs.junit.bom)
     testImplementation libs.junit.jupiter
+    testImplementation libs.mockito.core
+    testImplementation libs.mockito.jupiter
 
     integrationTestImplementation platform(libs.junit.bom)
     integrationTestImplementation libs.junit.jupiter
+    integrationTestImplementation libs.mockito.core
+    integrationTestImplementation libs.mockito.jupiter
 }
