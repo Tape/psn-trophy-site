@@ -13,7 +13,7 @@ import org.openpsn.client.rest.Method;
 import org.openpsn.client.rest.RequestEntity;
 import org.openpsn.client.rest.RestClient;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
@@ -44,9 +44,9 @@ class PsnTrophyClientTest {
         verify(restClient).requestObjectAsync(requestCaptor.capture(), eq(TrophyTitleResponse.class));
 
         final var request = requestCaptor.getValue();
-        assertEquals(Method.GET, request.getMethod());
-        assertEquals("https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles",
-            request.getUri().toString());
+        assertThat(request.getMethod()).isEqualTo(Method.GET);
+        assertThat(request.getUri()).asString()
+            .isEqualTo("https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles");
     }
 
     @Test
@@ -58,8 +58,8 @@ class PsnTrophyClientTest {
         verify(restClient).requestObjectAsync(requestCaptor.capture(), eq(TrophyTitleResponse.class));
 
         final var request = requestCaptor.getValue();
-        assertEquals(Method.GET, request.getMethod());
-        assertEquals("https://google.com/users/me/trophyTitles",
-            request.getUri().toString());
+        assertThat(request.getMethod()).isEqualTo(Method.GET);
+        assertThat(request.getUri()).asString()
+            .isEqualTo("https://google.com/users/me/trophyTitles");
     }
 }

@@ -1,10 +1,8 @@
 package org.openpsn.client.rest;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ContentTypeTest {
     @ParameterizedTest
@@ -13,8 +11,7 @@ class ContentTypeTest {
         "application/json; charset=utf-8",
     })
     void matches_should_returnTrueWhenSimilar(String contentType) {
-        assertTrue(ContentType.APPLICATION_JSON.matches(contentType),
-            contentType + "should match APPLICATION_JSON");
+        Assertions.assertThat(ContentType.APPLICATION_JSON.matches(contentType)).isTrue();
     }
 
     @ParameterizedTest
@@ -24,7 +21,6 @@ class ContentTypeTest {
         "text/html"
     })
     void matches_should_returnFalseWhenNotSimilar(String contentType) {
-        assertFalse(ContentType.APPLICATION_JSON.matches(contentType),
-            contentType + " should not match APPLICATION_JSON");
+        Assertions.assertThat(ContentType.APPLICATION_JSON.matches(contentType)).isFalse();
     }
 }

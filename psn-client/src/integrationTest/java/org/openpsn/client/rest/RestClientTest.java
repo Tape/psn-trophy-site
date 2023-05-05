@@ -9,11 +9,10 @@ import org.openpsn.IntegrationTest;
 import org.openpsn.client.rest.exception.ContentTypeException;
 import org.openpsn.client.rest.exception.StatusCodeException;
 
-import java.io.UncheckedIOException;
 import java.net.URI;
-import java.util.concurrent.CompletionException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatRuntimeException;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -42,17 +41,17 @@ class RestClientTest extends IntegrationTest {
         final var entity = RequestEntity.get(URI.create(mockServerHost + "/test"));
 
         final var response = restClient.requestObjectAsync(entity, TestPayload.class).join();
-        assertEquals("key", response.key);
-        assertEquals("value", response.value);
+        assertThat(response.key).isEqualTo("key");
+        assertThat(response.value).isEqualTo("value");
     }
 
     @Test
     public void requestObjectAsync_should_throwOnNon200() {
         final var entity = RequestEntity.get(URI.create(mockServerHost + "/test"));
 
-        final var exception = assertThrows(CompletionException.class, () ->
-            restClient.requestObjectAsync(entity, TestPayload.class).join());
-        assertInstanceOf(StatusCodeException.class, exception.getCause());
+        assertThatRuntimeException()
+            .isThrownBy(() -> restClient.requestObjectAsync(entity, TestPayload.class).join())
+            .withRootCauseInstanceOf(StatusCodeException.class);
     }
 
     @Test
@@ -66,9 +65,9 @@ class RestClientTest extends IntegrationTest {
 
         final var entity = RequestEntity.get(URI.create(mockServerHost + "/test"));
 
-        final var exception = assertThrows(CompletionException.class, () ->
-            restClient.requestObjectAsync(entity, TestPayload.class).join());
-        assertInstanceOf(ContentTypeException.class, exception.getCause());
+        assertThatRuntimeException()
+            .isThrownBy(() -> restClient.requestObjectAsync(entity, TestPayload.class).join())
+            .withRootCauseInstanceOf(ContentTypeException.class);
     }
 
     @Test
@@ -78,10 +77,9 @@ class RestClientTest extends IntegrationTest {
 
         final var entity = RequestEntity.get(URI.create(mockServerHost + "/test"));
 
-        final var exception = assertThrows(CompletionException.class, () ->
-            restClient.requestObjectAsync(entity, TestPayload.class).join());
-        assertInstanceOf(UncheckedIOException.class, exception.getCause());
-        assertInstanceOf(MismatchedInputException.class, exception.getCause().getCause());
+        assertThatRuntimeException()
+            .isThrownBy(() -> restClient.requestObjectAsync(entity, TestPayload.class).join())
+            .withRootCauseInstanceOf(MismatchedInputException.class);
     }
 
     private record TestPayload(

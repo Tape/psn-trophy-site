@@ -42,12 +42,10 @@ dependencies {
     annotationProcessor libs.lombok
 
     testImplementation platform(libs.junit.bom)
-    testImplementation libs.junit.jupiter
-    testImplementation libs.mockito.core
-    testImplementation libs.mockito.jupiter
+    testImplementation libs.bundles.junit
+    testImplementation libs.bundles.mockito
 
     integrationTestImplementation platform(libs.junit.bom)
-    integrationTestImplementation libs.junit.jupiter
-    integrationTestImplementation libs.mockito.core
-    integrationTestImplementation libs.mockito.jupiter
+    integrationTestImplementation libs.bundles.junit
+    integrationTestImplementation libs.bundles.mockito
 }
