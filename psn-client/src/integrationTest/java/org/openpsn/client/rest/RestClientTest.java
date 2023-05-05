@@ -11,7 +11,6 @@ import org.openpsn.client.rest.exception.StatusCodeException;
 
 import java.io.UncheckedIOException;
 import java.net.URI;
-import java.net.http.HttpRequest;
 import java.util.concurrent.CompletionException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,19 +39,19 @@ class RestClientTest extends IntegrationTest {
                     .withBody("{ \"key\": \"key\", \"value\": \"value\" }")
             );
 
-        final var request = HttpRequest.newBuilder(URI.create(mockServerHost + "/test")).build();
+        final var entity = RequestEntity.get(URI.create(mockServerHost + "/test"));
 
-        final var response = restClient.requestObjectAsync(request, TestPayload.class).join();
+        final var response = restClient.requestObjectAsync(entity, TestPayload.class).join();
         assertEquals("key", response.key);
         assertEquals("value", response.value);
     }
 
     @Test
     public void requestObjectAsync_should_throwOnNon200() {
-        final var request = HttpRequest.newBuilder(URI.create(mockServerHost + "/test")).build();
+        final var entity = RequestEntity.get(URI.create(mockServerHost + "/test"));
 
         final var exception = assertThrows(CompletionException.class, () ->
-            restClient.requestObjectAsync(request, TestPayload.class).join());
+            restClient.requestObjectAsync(entity, TestPayload.class).join());
         assertInstanceOf(StatusCodeException.class, exception.getCause());
     }
 
@@ -65,10 +64,10 @@ class RestClientTest extends IntegrationTest {
                     .withBody("Hello, world!")
             );
 
-        final var request = HttpRequest.newBuilder(URI.create(mockServerHost + "/test")).build();
+        final var entity = RequestEntity.get(URI.create(mockServerHost + "/test"));
 
         final var exception = assertThrows(CompletionException.class, () ->
-            restClient.requestObjectAsync(request, TestPayload.class).join());
+            restClient.requestObjectAsync(entity, TestPayload.class).join());
         assertInstanceOf(ContentTypeException.class, exception.getCause());
     }
 
@@ -77,10 +76,10 @@ class RestClientTest extends IntegrationTest {
         mockServerClient.when(request("/test").withMethod("GET"))
             .respond(response().withContentType(MediaType.APPLICATION_JSON));
 
-        final var request = HttpRequest.newBuilder(URI.create(mockServerHost + "/test")).build();
+        final var entity = RequestEntity.get(URI.create(mockServerHost + "/test"));
 
         final var exception = assertThrows(CompletionException.class, () ->
-            restClient.requestObjectAsync(request, TestPayload.class).join());
+            restClient.requestObjectAsync(entity, TestPayload.class).join());
         assertInstanceOf(UncheckedIOException.class, exception.getCause());
         assertInstanceOf(MismatchedInputException.class, exception.getCause().getCause());
     }

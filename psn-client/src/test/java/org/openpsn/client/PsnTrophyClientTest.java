@@ -9,9 +9,9 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openpsn.client.response.TrophyTitleResponse;
+import org.openpsn.client.rest.Method;
+import org.openpsn.client.rest.RequestEntity;
 import org.openpsn.client.rest.RestClient;
-
-import java.net.http.HttpRequest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class PsnTrophyClientTest {
     @Captor
-    private ArgumentCaptor<HttpRequest> requestCaptor;
+    private ArgumentCaptor<RequestEntity<?>> requestCaptor;
 
     @Mock
     private RestClient restClient;
@@ -44,9 +44,9 @@ class PsnTrophyClientTest {
         verify(restClient).requestObjectAsync(requestCaptor.capture(), eq(TrophyTitleResponse.class));
 
         final var request = requestCaptor.getValue();
-        assertEquals("GET", request.method());
+        assertEquals(Method.GET, request.getMethod());
         assertEquals("https://m.np.playstation.com/api/trophy/v1/users/me/trophyTitles",
-            request.uri().toString());
+            request.getUri().toString());
     }
 
     @Test
@@ -58,8 +58,8 @@ class PsnTrophyClientTest {
         verify(restClient).requestObjectAsync(requestCaptor.capture(), eq(TrophyTitleResponse.class));
 
         final var request = requestCaptor.getValue();
-        assertEquals("GET", request.method());
+        assertEquals(Method.GET, request.getMethod());
         assertEquals("https://google.com/users/me/trophyTitles",
-            request.uri().toString());
+            request.getUri().toString());
     }
 }

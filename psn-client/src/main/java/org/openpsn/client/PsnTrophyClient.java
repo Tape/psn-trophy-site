@@ -2,6 +2,7 @@ package org.openpsn.client;
 
 import lombok.NonNull;
 import org.openpsn.client.response.TrophyTitleResponse;
+import org.openpsn.client.rest.RequestEntity;
 import org.openpsn.client.rest.RestClient;
 
 import java.net.URI;
@@ -24,9 +25,7 @@ public class PsnTrophyClient extends AbstractApiClient {
 
     public CompletableFuture<TrophyTitleResponse> getTrophyTitles(@NonNull String userId) {
         final var uri = URI.create(urlBase() + String.format("/users/%s/trophyTitles", userId));
-        final var requestBuilder = requestBuilder(uri, authHeaders);
-
-        return restClient.requestObjectAsync(requestBuilder.build(), TrophyTitleResponse.class);
+        return restClient.requestObjectAsync(RequestEntity.get(uri), TrophyTitleResponse.class);
     }
 
     @Override

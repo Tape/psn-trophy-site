@@ -6,6 +6,8 @@ import org.openpsn.client.rest.exception.ContentTypeException;
 import org.openpsn.client.rest.exception.StatusCodeException;
 
 import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -36,7 +38,11 @@ public class RestClient {
         this.httpClient = httpClientBuilder.build();
     }
 
-    public <T> CompletableFuture<T> requestObjectAsync(HttpRequest request, Class<T> responseType) {
+    public <T> CompletableFuture<T> requestObjectAsync(
+        @NonNull RequestEntity<?> entity,
+        @NonNull Class<T> responseType
+    ) {
+        final var request = toHttpRequest(entity);
         final var responseFuture = httpClient.sendAsync(request, response -> {
             // Validate for a 2xx status code
             final var statusCode = StatusCode.of(response.statusCode());
@@ -66,5 +72,39 @@ public class RestClient {
         });
 
         return responseFuture.thenApply(HttpResponse::body);
+    }
+
+    private HttpRequest.BodyPublisher toBodyPublisher(Object payload) {
+        if (payload == null) {
+            return HttpRequest.BodyPublishers.noBody();
+        }
+
+        return HttpRequest.BodyPublishers.ofInputStream(() -> {
+            try {
+                final var outputStream = new PipedOutputStream();
+                final var inputStream = new PipedInputStream(outputStream);
+                objectMapper.writeValue(outputStream, payload);
+                return inputStream;
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        });
+    }
+
+    private HttpRequest toHttpRequest(@NonNull RequestEntity<?> entity) {
+        final var builder = HttpRequest.newBuilder(entity.getUri());
+
+        final var methodString = entity.getMethod().name();
+        final var bodyPublisher = toBodyPublisher(entity.getPayload());
+        builder.method(methodString, bodyPublisher);
+
+        for (final var headerEntry : entity.getHeaders().entrySet()) {
+            final var headerName = headerEntry.getKey();
+            for (final var headerValue : headerEntry.getValue()) {
+                builder.header(headerName, headerValue);
+            }
+        }
+
+        return builder.build();
     }
 }
