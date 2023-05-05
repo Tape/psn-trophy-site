@@ -10,16 +10,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiPredicate;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class RequestEntity<T> {
-    private static final BiPredicate<String, String> NOOP_HEADER_FILTER = (s1, s2) -> true;
-
     private final URI uri;
     private final Method method;
     private final T payload;
+    // TODO: Case insensitive
     private final Map<String, List<String>> headers = new HashMap<>();
 
     public static RequestEntity<Void> get(URI uri) {
