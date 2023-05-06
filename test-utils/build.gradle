@@ -1,0 +1,8 @@
+plugins {
+    id 'openpsn-java'
+}
+
+dependencies {
+    implementation platform(libs.junit.bom)
+    implementation libs.junit.engine
+}

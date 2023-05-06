@@ -1,3 +1,4 @@
 rootProject.name = 'psn-trophy-site'
 
-include ':psn-client'
+include 'psn-client'
+include 'test-utils'

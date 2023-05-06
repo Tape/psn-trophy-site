@@ -1,6 +1,5 @@
 package org.openpsn.client;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,12 +11,13 @@ import org.openpsn.client.response.TrophyTitleResponse;
 import org.openpsn.client.rest.Method;
 import org.openpsn.client.rest.RequestEntity;
 import org.openpsn.client.rest.RestClient;
+import org.openpsn.test.junit.extension.SystemPropertiesExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith({MockitoExtension.class, SystemPropertiesExtension.class})
 class PsnTrophyClientTest {
     @Captor
     private ArgumentCaptor<RequestEntity<?>> requestCaptor;
@@ -30,11 +30,6 @@ class PsnTrophyClientTest {
     @BeforeEach
     public void setUp() {
         this.client = new PsnTrophyClient(restClient, null);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        System.clearProperty("openpsn.client.trophyUrlBase");
     }
 
     @Test
