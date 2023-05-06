@@ -20,22 +20,55 @@ public class RequestEntity<T> {
     // TODO: Case insensitive
     private final Map<String, List<String>> headers = new HashMap<>();
 
-    public static RequestEntity<Void> get(URI uri) {
+
+    /**
+     * Creates an entity that will perform a GET request with an empty body.
+     *
+     * @param uri is the URI to send the request to.
+     */
+    public static RequestEntity<Void> get(@NonNull URI uri) {
         return new RequestEntity<>(uri, Method.GET, null);
     }
 
-    public static <T> RequestEntity<T> patch(URI uri, T payload) {
+    /**
+     * Creates an entity that will perform a PATCH request with a given payload.
+     *
+     * @param uri     is the URI to send the request to.
+     * @param payload is the payload to transmit, with null values being treated as an empty body.
+     * @param <T>     is the type of the payload.
+     */
+    public static <T> RequestEntity<T> patch(@NonNull URI uri, T payload) {
         return new RequestEntity<>(uri, Method.PATCH, payload);
     }
 
-    public static <T> RequestEntity<T> post(URI uri, T payload) {
+    /**
+     * Creates an entity that will perform a POST request with a given payload.
+     *
+     * @param uri     is the URI to send the request to.
+     * @param payload is the payload to transmit, with null values being treated as an empty body.
+     * @param <T>     is the type of the payload.
+     */
+    public static <T> RequestEntity<T> post(@NonNull URI uri, T payload) {
         return new RequestEntity<>(uri, Method.POST, payload);
     }
 
-    public static <T> RequestEntity<T> put(URI uri, T payload) {
+    /**
+     * Creates an entity that will perform a PUT request with a given payload.
+     *
+     * @param uri     is the URI to send the request to.
+     * @param payload is the payload to transmit, with null values being treated as an empty body.
+     * @param <T>     is the type of the payload.
+     */
+    public static <T> RequestEntity<T> put(@NonNull URI uri, T payload) {
         return new RequestEntity<>(uri, Method.PUT, payload);
     }
 
+    /**
+     * Adds a new header to the entity. Repeats of the same header will be added as another value.
+     *
+     * @param name  is the name of the header, such as Content-Type.
+     * @param value is the value of the header, such as application/json.
+     */
     public RequestEntity<T> header(@NonNull String name, @NonNull String value) {
         headers.computeIfAbsent(name, k -> new ArrayList<>()).add(value);
         return this;
