@@ -8,7 +8,7 @@ import java.util.List;
 public record TrophyTitleResponse(
     @NonNull List<TrophyTitle> trophyTitles,
     int totalItemCount,
-    int nextOffset,
-    int previousOffset
+    Integer nextOffset,
+    Integer previousOffset
 ) {
 }

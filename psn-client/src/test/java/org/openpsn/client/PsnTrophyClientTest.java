@@ -29,7 +29,7 @@ class PsnTrophyClientTest {
 
     @BeforeEach
     public void setUp() {
-        this.client = new PsnTrophyClient(restClient, null);
+        this.client = new PsnTrophyClient(restClient, "test");
     }
 
     @Test

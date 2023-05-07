@@ -2,21 +2,13 @@ package org.openpsn.client;
 
 import lombok.NonNull;
 import org.openpsn.client.response.TrophyTitleResponse;
-import org.openpsn.client.rest.RequestEntity;
 import org.openpsn.client.rest.RestClient;
 
-import java.net.URI;
-import java.net.http.HttpHeaders;
 import java.util.concurrent.CompletableFuture;
 
 public class PsnTrophyClient extends AbstractApiClient {
-    private static final String DEFAULT_URL_BASE = "https://m.np.playstation.com/api/trophy/v1";
-
-    private final HttpHeaders authHeaders;
-
-    PsnTrophyClient(@NonNull RestClient restClient, HttpHeaders authHeaders) {
-        super(restClient);
-        this.authHeaders = authHeaders;
+    PsnTrophyClient(@NonNull RestClient restClient, @NonNull String accessToken) {
+        super(restClient, accessToken);
     }
 
     public CompletableFuture<TrophyTitleResponse> getTrophyTitles() {
@@ -24,12 +16,13 @@ public class PsnTrophyClient extends AbstractApiClient {
     }
 
     public CompletableFuture<TrophyTitleResponse> getTrophyTitles(@NonNull String userId) {
-        final var uri = URI.create(urlBase() + String.format("/users/%s/trophyTitles", userId));
-        return restClient.requestObjectAsync(RequestEntity.get(uri), TrophyTitleResponse.class);
+        return get(String.format("/users/%s/trophyTitles", userId), TrophyTitleResponse.class);
     }
 
     @Override
     protected String urlBase() {
-        return System.getProperty("openpsn.client.trophyUrlBase", DEFAULT_URL_BASE);
+        return System.getProperty(
+            "openpsn.client.trophyUrlBase",
+            "https://m.np.playstation.com/api/trophy/v1");
     }
 }

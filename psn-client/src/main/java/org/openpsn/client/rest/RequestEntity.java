@@ -73,4 +73,16 @@ public class RequestEntity<T> {
         headers.computeIfAbsent(name, k -> new ArrayList<>()).add(value);
         return this;
     }
+
+    /**
+     * Adds a new header to the entity. Replaces the existing header value if it exists. This will also lock down the
+     * header and make it immutable so that any future calls to append new values will fail.
+     *z
+     * @param name  is the name of the header, such as Content-Type.
+     * @param value is the value of the header, such as application/json.
+     */
+    public RequestEntity<T> setHeader(@NonNull String name, @NonNull String value) {
+        headers.put(name, List.of(value));
+        return this;
+    }
 }

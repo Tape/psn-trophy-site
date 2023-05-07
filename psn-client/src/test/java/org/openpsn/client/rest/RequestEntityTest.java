@@ -66,4 +66,14 @@ class RequestEntityTest {
         assertThat(entity.getHeaders())
             .containsEntry("X-Test", List.of("value 1", "value 2"));
     }
+
+    @Test
+    void header_should_replaceHeader() {
+        final var entity = RequestEntity.get(expectedUri)
+            .header("X-Test", "value 1")
+            .setHeader("X-Test", "value 2");
+
+        assertThat(entity.getHeaders())
+            .containsEntry("X-Test", List.of("value 2"));
+    }
 }

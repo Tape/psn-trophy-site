@@ -1,6 +1,7 @@
 package org.openpsn.client.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.NonNull;
 import org.openpsn.client.rest.exception.ContentTypeException;
 import org.openpsn.client.rest.exception.StatusCodeException;
@@ -20,7 +21,7 @@ public class RestClient {
     private final ObjectMapper objectMapper;
 
     public RestClient() {
-        this(new ObjectMapper());
+        this(new ObjectMapper().registerModule(new JavaTimeModule()));
     }
 
     public RestClient(@NonNull ObjectMapper objectMapper) {
