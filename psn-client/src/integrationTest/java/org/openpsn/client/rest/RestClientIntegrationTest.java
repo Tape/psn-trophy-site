@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatRuntimeException;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
-class RestClientTest extends IntegrationTest {
+class RestClientIntegrationTest extends IntegrationTest {
     private RestClient restClient;
 
     @BeforeEach
