@@ -6,6 +6,10 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.util.Properties;
 
+/**
+ * JUnit Jupiter extension that resets system properties states between runs. Extremely useful for temporarily setting
+ * system properties with automatic cleanup guaranteed.
+ */
 public class SystemPropertiesExtension implements BeforeEachCallback, AfterEachCallback {
     private final Properties originalProperties = new Properties();
 
