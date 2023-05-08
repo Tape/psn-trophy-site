@@ -8,8 +8,7 @@ import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.openpsn.test.util.ResourceUtils.getResourceBytes;
-import static org.openpsn.test.util.ResourceUtils.getResourceStream;
+import static org.openpsn.test.util.ResourceUtils.*;
 
 class ResourceUtilsTest {
     @Test
@@ -35,5 +34,17 @@ class ResourceUtilsTest {
     void getResourceStream_should_returnEmptyIfNoResource() {
         final var stream = getResourceStream("does-not-exist.txt");
         assertThat(stream).isEmpty();
+    }
+
+    @Test
+    void getResourceString_should_readString() throws IOException {
+        assertThat(getResourceString("test.txt"))
+            .isEqualTo("test\n");
+    }
+
+    @Test
+    void getResourceString_should_throwIfNoResource() {
+        assertThatExceptionOfType(NoSuchElementException.class)
+            .isThrownBy(() -> getResourceString("does-not-exist.txt"));
     }
 }

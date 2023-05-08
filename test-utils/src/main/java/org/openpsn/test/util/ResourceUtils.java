@@ -6,6 +6,7 @@ import lombok.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -32,5 +33,14 @@ public class ResourceUtils {
             .getResourceAsStream(path);
 
         return Optional.ofNullable(stream);
+    }
+
+    /**
+     * Fetch a string with the contents of the file at the given resource path.
+     *
+     * @param path is the path the resource is located at.
+     */
+    public static String getResourceString(@NonNull String path) throws IOException {
+        return new String(getResourceBytes(path), StandardCharsets.UTF_8);
     }
 }
