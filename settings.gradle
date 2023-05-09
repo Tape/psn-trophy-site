@@ -1,4 +1,5 @@
 rootProject.name = 'psn-trophy-site'
 
 include 'psn-client'
+include 'rest-client'
 include 'test-utils'

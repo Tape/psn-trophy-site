@@ -3,12 +3,10 @@ plugins {
 }
 
 dependencies {
-    implementation project(':rest-client')
-
-    testImplementation project(':test-utils')
+    implementation libs.jackson.databind
+    implementation libs.jackson.datatype.jsr310
 
     integrationTestImplementation libs.testcontainers.core
     integrationTestImplementation libs.testcontainers.mockserver
     integrationTestImplementation libs.mockserver.client
-    integrationTestImplementation project(':test-utils')
 }
