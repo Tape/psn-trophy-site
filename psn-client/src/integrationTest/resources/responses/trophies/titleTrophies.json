@@ -1,0 +1,25 @@
+{
+  "trophySetVersion": "01.40",
+  "hasTrophyGroups": true,
+  "trophies": [
+    {
+      "trophyId": 0,
+      "trophyHidden": false,
+      "trophyType": "platinum",
+      "trophyName": "You've Only Done Everything",
+      "trophyDetail": "Found all trophies in ASTRO's PLAYROOM. See you in our next adventure!",
+      "trophyIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR20188_00/4e1f7ad7-5720-4b03-96a4-ecf8abb17ed8.png",
+      "trophyGroupId": "default"
+    },
+    {
+      "trophyId": 45,
+      "trophyHidden": true,
+      "trophyType": "bronze",
+      "trophyName": "Gravity Daze!",
+      "trophyDetail": "Made the CPU Chip punch the glass sphere, sending at least 10 Bots flying.",
+      "trophyIconUrl": "https://psnobj.prod.dl.playstation.net/psnobj/NPWR20188_00/ed83d6d9-2708-4465-8f0f-6e3db7ae9665.png",
+      "trophyGroupId": "001"
+    }
+  ],
+  "totalItemCount": 46
+}

@@ -1,7 +1,8 @@
 package org.openpsn.client;
 
 import lombok.NonNull;
-import org.openpsn.client.response.TrophyTitleResponse;
+import org.openpsn.client.response.TitleTrophiesResponse;
+import org.openpsn.client.response.TrophyTitlesResponse;
 import org.openpsn.client.rest.RestClient;
 
 import java.util.concurrent.CompletableFuture;
@@ -11,12 +12,28 @@ public class PsnTrophyClient extends AbstractApiClient {
         super(restClient, accessToken);
     }
 
-    public CompletableFuture<TrophyTitleResponse> getTrophyTitles() {
+    public CompletableFuture<TrophyTitlesResponse> getTrophyTitles() {
         return getTrophyTitles("me");
     }
 
-    public CompletableFuture<TrophyTitleResponse> getTrophyTitles(@NonNull String userId) {
-        return get(String.format("/users/%s/trophyTitles", userId), TrophyTitleResponse.class);
+    public CompletableFuture<TrophyTitlesResponse> getTrophyTitles(@NonNull String userId) {
+        return get(String.format("/users/%s/trophyTitles", userId), TrophyTitlesResponse.class);
+    }
+
+    public CompletableFuture<TitleTrophiesResponse> getTitleTrophies(@NonNull String npCommunicationId) {
+        return getTitleTrophies(npCommunicationId, "all");
+    }
+
+    public CompletableFuture<TitleTrophiesResponse> getTitleTrophies(
+        @NonNull String npCommunicationId,
+        @NonNull String trophyGroupId
+    ) {
+        final String path = String.format(
+            "/npCommunicationIds/%s/trophyGroups/%s/trophies",
+            npCommunicationId,
+            trophyGroupId);
+
+        return get(path, TitleTrophiesResponse.class);
     }
 
     @Override

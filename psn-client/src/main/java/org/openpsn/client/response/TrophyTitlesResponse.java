@@ -5,7 +5,7 @@ import org.openpsn.client.model.TrophyTitle;
 
 import java.util.List;
 
-public record TrophyTitleResponse(
+public record TrophyTitlesResponse(
     @NonNull List<TrophyTitle> trophyTitles,
     int totalItemCount,
     Integer nextOffset,

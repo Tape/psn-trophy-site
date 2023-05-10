@@ -7,7 +7,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openpsn.client.response.TrophyTitleResponse;
+import org.openpsn.client.response.TitleTrophiesResponse;
+import org.openpsn.client.response.TrophyTitlesResponse;
 import org.openpsn.client.rest.Method;
 import org.openpsn.client.rest.RequestEntity;
 import org.openpsn.client.rest.RestClient;
@@ -33,10 +34,24 @@ class PsnTrophyClientTest {
     }
 
     @Test
-    public void getTrophyTitles_should_useDefaultUrlBase() {
+    public void getX_should_overrideUrlBase() {
+        System.setProperty("openpsn.client.trophyUrlBase", "https://google.com");
+
         client.getTrophyTitles();
 
-        verify(restClient).requestObjectAsync(requestCaptor.capture(), eq(TrophyTitleResponse.class));
+        verify(restClient).requestObjectAsync(requestCaptor.capture(), eq(TrophyTitlesResponse.class));
+
+        final var request = requestCaptor.getValue();
+        assertThat(request.getMethod()).isEqualTo(Method.GET);
+        assertThat(request.getUri()).asString()
+            .isEqualTo("https://google.com/users/me/trophyTitles");
+    }
+
+    @Test
+    public void getTrophyTitles_should_buildUrl() {
+        client.getTrophyTitles();
+
+        verify(restClient).requestObjectAsync(requestCaptor.capture(), eq(TrophyTitlesResponse.class));
 
         final var request = requestCaptor.getValue();
         assertThat(request.getMethod()).isEqualTo(Method.GET);
@@ -45,16 +60,14 @@ class PsnTrophyClientTest {
     }
 
     @Test
-    public void getTrophyTitles_should_overrideUrlBase() {
-        System.setProperty("openpsn.client.trophyUrlBase", "https://google.com");
+    public void getTitleTrophies_should_buildUrl() {
+        client.getTitleTrophies("test");
 
-        client.getTrophyTitles();
-
-        verify(restClient).requestObjectAsync(requestCaptor.capture(), eq(TrophyTitleResponse.class));
+        verify(restClient).requestObjectAsync(requestCaptor.capture(), eq(TitleTrophiesResponse.class));
 
         final var request = requestCaptor.getValue();
         assertThat(request.getMethod()).isEqualTo(Method.GET);
         assertThat(request.getUri()).asString()
-            .isEqualTo("https://google.com/users/me/trophyTitles");
+            .isEqualTo("https://m.np.playstation.com/api/trophy/v1/npCommunicationIds/test/trophyGroups/all/trophies");
     }
 }
