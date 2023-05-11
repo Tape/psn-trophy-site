@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockserver.model.MediaType;
 import org.openpsn.IntegrationTest;
+import org.openpsn.client.model.*;
 import org.openpsn.client.rest.RestClient;
 import org.openpsn.test.junit.extension.SystemPropertiesExtension;
 
@@ -49,6 +50,10 @@ public class PsnTrophyClientIntegrationTest extends IntegrationTest {
 
         final var response = client.getTrophyTitles().join();
         assertThat(response.trophyTitles()).hasSize(2);
+
+        assertThat(response.trophyTitles().get(0))
+            .extracting(TrophyTitle::trophyTitlePlatform)
+            .isEqualTo(TitlePlatform.PS5);
     }
 
     @Test
@@ -67,6 +72,10 @@ public class PsnTrophyClientIntegrationTest extends IntegrationTest {
 
         final var response = client.getTitleTrophies("test").join();
         assertThat(response.trophies()).hasSize(2);
+
+        assertThat(response.trophies().get(0))
+            .extracting(Trophy::trophyType)
+            .isEqualTo(TrophyType.PLATINUM);
     }
 
     @Test
@@ -84,7 +93,15 @@ public class PsnTrophyClientIntegrationTest extends IntegrationTest {
             );
 
         final var response = client.getUserTitleTrophies("test").join();
+
         assertThat(response.trophies()).hasSize(2);
+        assertThat(response.trophies().get(0))
+            .extracting(UserTrophy::trophyType, UserTrophy::trophyRare)
+            .containsExactly(TrophyType.PLATINUM, TrophyRarity.VERY_RARE);
+
         assertThat(response.rarestTrophies()).hasSize(1);
+        assertThat(response.rarestTrophies().get(0))
+            .extracting(UserTrophy::trophyType, UserTrophy::trophyRare)
+            .containsExactly(TrophyType.GOLD, TrophyRarity.VERY_RARE);
     }
 }

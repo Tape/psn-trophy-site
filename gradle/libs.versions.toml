@@ -8,6 +8,7 @@ mockserver = "5.15.0"
 testcontainers = "1.18.0"
 
 [libraries]
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }

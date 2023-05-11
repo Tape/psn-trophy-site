@@ -11,7 +11,7 @@ public record TrophyTitle(
     @NonNull String trophyTitleName,
     String trophyTitleDetail,
     @NonNull String trophyTitleIconUrl,
-    @NonNull String trophyTitlePlatform,
+    @NonNull TitlePlatform trophyTitlePlatform,
     boolean hasTrophyGroups,
     @NonNull TrophyCounts definedTrophies,
     int progress,

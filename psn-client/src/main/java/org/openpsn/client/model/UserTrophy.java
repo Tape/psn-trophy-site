@@ -12,8 +12,8 @@ public record UserTrophy(
     Integer progressRate,
     ZonedDateTime progressedDateTime,
     ZonedDateTime earnedDateTime,
-    @NonNull String trophyType,
-    int trophyRare,
+    @NonNull TrophyType trophyType,
+    @NonNull TrophyRarity trophyRare,
     @NonNull String trophyEarnedRate
 ) {
 }

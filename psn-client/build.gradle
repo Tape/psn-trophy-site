@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation libs.jackson.annotations
     implementation project(':rest-client')
 
     testImplementation project(':test-utils')

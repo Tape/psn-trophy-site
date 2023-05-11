@@ -5,7 +5,7 @@ import lombok.NonNull;
 public record Trophy(
     int trophyId,
     boolean trophyHidden,
-    @NonNull String trophyType,
+    @NonNull TrophyType trophyType,
     @NonNull String trophyName,
     @NonNull String trophyDetail,
     @NonNull String trophyIconUrl,
