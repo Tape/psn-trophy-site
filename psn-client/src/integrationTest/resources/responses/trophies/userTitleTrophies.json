@@ -1,0 +1,37 @@
+{
+  "trophySetVersion": "01.40",
+  "hasTrophyGroups": true,
+  "lastUpdatedDateTime": "2020-11-21T10:45:19Z",
+  "trophies": [
+    {
+      "trophyId": 0,
+      "trophyHidden": false,
+      "earned": true,
+      "earnedDateTime": "2020-11-20T23:53:13Z",
+      "trophyType": "platinum",
+      "trophyRare": 1,
+      "trophyEarnedRate": "8.0"
+    },
+    {
+      "trophyId": 45,
+      "trophyHidden": true,
+      "earned": true,
+      "earnedDateTime": "2020-11-21T10:45:19Z",
+      "trophyType": "bronze",
+      "trophyRare": 1,
+      "trophyEarnedRate": "12.8"
+    }
+  ],
+  "rarestTrophies": [
+    {
+      "trophyId": 44,
+      "trophyHidden": true,
+      "earned": true,
+      "earnedDateTime": "2020-11-20T15:21:21Z",
+      "trophyType": "gold",
+      "trophyRare": 1,
+      "trophyEarnedRate": "6.1"
+    }
+  ],
+  "totalItemCount": 46
+}

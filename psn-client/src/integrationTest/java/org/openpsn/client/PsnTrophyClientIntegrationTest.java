@@ -68,4 +68,23 @@ public class PsnTrophyClientIntegrationTest extends IntegrationTest {
         final var response = client.getTitleTrophies("test").join();
         assertThat(response.trophies()).hasSize(2);
     }
+
+    @Test
+    public void getUserTitleTrophies_should_returnPayloadIfSuccessful() throws IOException {
+        mockServerClient
+            .when(
+                request()
+                    .withPath("/users/me/npCommunicationIds/test/trophyGroups/all/trophies")
+                    .withHeader("Authorization", "Bearer test")
+            )
+            .respond(
+                response()
+                    .withContentType(MediaType.APPLICATION_JSON)
+                    .withBody(getResourceBytes("responses/trophies/userTitleTrophies.json"))
+            );
+
+        final var response = client.getUserTitleTrophies("test").join();
+        assertThat(response.trophies()).hasSize(2);
+        assertThat(response.rarestTrophies()).hasSize(1);
+    }
 }
