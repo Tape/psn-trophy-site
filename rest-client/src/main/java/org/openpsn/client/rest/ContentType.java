@@ -1,9 +1,12 @@
 package org.openpsn.client.rest;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+@Getter
 @RequiredArgsConstructor
 public enum ContentType {
+    FORM_URLENCODED("application/x-www-form-urlencoded"),
     APPLICATION_JSON("application/json");
 
     private final String value;

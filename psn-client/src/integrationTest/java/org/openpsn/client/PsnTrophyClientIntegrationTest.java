@@ -26,7 +26,6 @@ public class PsnTrophyClientIntegrationTest extends IntegrationTest {
         final var restClient = new RestClient();
         client = new PsnTrophyClient(restClient, "test");
         System.setProperty("openpsn.client.trophyUrlBase", mockServerHost);
-
     }
 
     @AfterEach

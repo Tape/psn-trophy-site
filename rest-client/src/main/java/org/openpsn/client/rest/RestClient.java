@@ -7,12 +7,12 @@ import org.openpsn.client.rest.exception.ContentTypeException;
 import org.openpsn.client.rest.exception.StatusCodeException;
 
 import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.io.UncheckedIOException;
 import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -39,64 +39,56 @@ public class RestClient {
         this.httpClient = httpClientBuilder.build();
     }
 
+    public CompletableFuture<Response> requestAsync(@NonNull RequestEntity<?> entity) {
+        final var request = toHttpRequest(entity);
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofByteArray())
+            .thenApply(ResponseImpl::new);
+    }
+
     public <T> CompletableFuture<T> requestObjectAsync(
         @NonNull RequestEntity<?> entity,
         @NonNull Class<T> responseType
     ) {
-        final var request = toHttpRequest(entity);
-        final var responseFuture = httpClient.sendAsync(request, response -> {
-            // Validate for a 2xx status code
-            final var statusCode = StatusCode.of(response.statusCode());
-            if (!statusCode.is2xxSuccessful()) {
-                throw new StatusCodeException(statusCode.getCode());
-            }
+        return requestAsync(entity)
+            .thenApply(response -> {
+                // Validate for a 2xx status code
+                if (!response.statusCode().is2xxSuccessful()) {
+                    throw new StatusCodeException(response.statusCode().getCode());
+                }
 
-            // Extract the Content-Type header for validation
-            final var contentType = response.headers().firstValue("Content-Type")
-                .orElseThrow(() -> new ContentTypeException("<missing header>"));
-            // We currently only support JSON parsing
-            if (!ContentType.APPLICATION_JSON.matches(contentType)) {
-                throw new ContentTypeException(contentType);
-            }
-
-            // Create a BodySubscriber that converts an InputStream into T
-            return HttpResponse.BodySubscribers.mapping(
-                HttpResponse.BodySubscribers.ofInputStream(),
-                inputStream -> {
-                    try {
-                        return objectMapper.readValue(inputStream, responseType);
-                    } catch (IOException e) {
-                        // TODO: Use something more specific here?
-                        throw new UncheckedIOException(e);
-                    }
-                });
-        });
-
-        return responseFuture.thenApply(HttpResponse::body);
+                return response.readObject(responseType);
+            });
     }
 
-    private HttpRequest.BodyPublisher toBodyPublisher(Object payload) {
+    private HttpRequest.BodyPublisher toBodyPublisher(@NonNull RequestEntity<?> entity) {
+        final var payload = entity.getPayload();
         if (payload == null) {
             return HttpRequest.BodyPublishers.noBody();
         }
 
-        return HttpRequest.BodyPublishers.ofInputStream(() -> {
-            try {
-                final var outputStream = new PipedOutputStream();
-                final var inputStream = new PipedInputStream(outputStream);
-                objectMapper.writeValue(outputStream, payload);
-                return inputStream;
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        });
+        // String and byte[] types use their own respective publishers
+        if (payload instanceof String str) {
+            return HttpRequest.BodyPublishers.ofString(str);
+        } else if (payload instanceof byte[] bytes) {
+            return HttpRequest.BodyPublishers.ofByteArray(bytes);
+        }
+
+        final byte[] bytes;
+        try {
+            bytes = objectMapper.writeValueAsBytes(payload);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        entity.contentType(ContentType.APPLICATION_JSON);
+        return HttpRequest.BodyPublishers.ofByteArray(bytes);
     }
 
     private HttpRequest toHttpRequest(@NonNull RequestEntity<?> entity) {
         final var builder = HttpRequest.newBuilder(entity.getUri());
 
         final var methodString = entity.getMethod().name();
-        final var bodyPublisher = toBodyPublisher(entity.getPayload());
+        final var bodyPublisher = toBodyPublisher(entity);
         builder.method(methodString, bodyPublisher);
 
         for (final var headerEntry : entity.getHeaders().entrySet()) {
@@ -107,5 +99,46 @@ public class RestClient {
         }
 
         return builder.build();
+    }
+
+    private class ResponseImpl implements Response {
+        private final HttpResponse<byte[]> response;
+
+        private ResponseImpl(@NonNull HttpResponse<byte[]> response) {
+            this.response = response;
+        }
+
+        @Override
+        public Optional<String> contentType() {
+            return response.headers().firstValue("Content-Type");
+        }
+
+        @Override
+        public HttpHeaders headers() {
+            return response.headers();
+        }
+
+        @Override
+        public <T> T readObject(Class<T> type) {
+            // Extract the Content-Type header for validation as we only support JSON
+            final var contentType = contentType()
+                .orElseThrow(() -> new ContentTypeException("<missing header>"));
+
+            if (!ContentType.APPLICATION_JSON.matches(contentType)) {
+                throw new ContentTypeException(contentType);
+            }
+
+            try {
+                return objectMapper.readValue(response.body(), type);
+            } catch (IOException e) {
+                // TODO: Use something more specific here?
+                throw new UncheckedIOException(e);
+            }
+        }
+
+        @Override
+        public StatusCode statusCode() {
+            return StatusCode.of(response.statusCode());
+        }
     }
 }
