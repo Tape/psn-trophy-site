@@ -6,7 +6,13 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ContentType {
+    /**
+     * Type for the POST equivalent of GET query parameters in the body.
+     */
     FORM_URLENCODED("application/x-www-form-urlencoded"),
+    /**
+     * Type for a regular JSON encoded body.
+     */
     APPLICATION_JSON("application/json");
 
     private final String value;
