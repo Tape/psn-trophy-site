@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.util.List;
 
+import static java.util.Map.entry;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RequestEntityTest {
@@ -49,31 +50,11 @@ class RequestEntityTest {
     }
 
     @Test
-    void header_should_addHeader() {
+    void headers_should_enableHeaderModifications() {
         final var entity = RequestEntity.get(expectedUri)
-            .header("Content-Type", "application/json");
+            .headers(headers -> headers.contentType(ContentType.APPLICATION_JSON));
 
-        assertThat(entity.getHeaders())
-            .containsEntry("Content-Type", List.of("application/json"));
-    }
-
-    @Test
-    void header_should_addMultipleOfSameHeader() {
-        final var entity = RequestEntity.get(expectedUri)
-            .header("X-Test", "value 1")
-            .header("X-Test", "value 2");
-
-        assertThat(entity.getHeaders())
-            .containsEntry("X-Test", List.of("value 1", "value 2"));
-    }
-
-    @Test
-    void header_should_replaceHeader() {
-        final var entity = RequestEntity.get(expectedUri)
-            .header("X-Test", "value 1")
-            .setHeader("X-Test", "value 2");
-
-        assertThat(entity.getHeaders())
-            .containsEntry("X-Test", List.of("value 2"));
+        assertThat(entity.getHeaders().entrySet())
+            .contains(entry(Headers.CONTENT_TYPE, List.of(ContentType.APPLICATION_JSON.getValue())));
     }
 }

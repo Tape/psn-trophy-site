@@ -3,6 +3,7 @@ package org.openpsn.client;
 import lombok.NonNull;
 import org.openpsn.client.response.TokenResponse;
 import org.openpsn.client.rest.ContentType;
+import org.openpsn.client.rest.Headers;
 import org.openpsn.client.rest.RequestEntity;
 import org.openpsn.client.rest.RestClient;
 
@@ -26,14 +27,14 @@ public class PsnAuthClient extends AbstractApiClient {
         ));
 
         final var entity = RequestEntity.get(URI.create(urlBase() + "/authorize?" + query))
-            .header("Cookie", "npsso=" + npSso);
+            .headers(headers -> headers.set("Cookie", "npsso=" + npSso));
 
         return restClient.requestAsync(entity)
             .thenApply(response -> {
                 final var location = response.headers()
-                    .firstValue("Location")
+                    .getFirst(Headers.LOCATION)
                     .map(URI::create)
-                    .orElseThrow(() -> new IllegalArgumentException("Missing location header"));
+                    .orElseThrow(() -> new IllegalArgumentException("Missing 'Location' header"));
 
                 final var queryParams = urlDecodeMap(location.getQuery());
                 return Objects.requireNonNull(queryParams.get("code"));
@@ -49,8 +50,10 @@ public class PsnAuthClient extends AbstractApiClient {
         ));
 
         final var entity = RequestEntity.post(URI.create(urlBase() + "/token"), body)
-            .contentType(ContentType.FORM_URLENCODED)
-            .header("Authorization", "Basic MDk1MTUxNTktNzIzNy00MzcwLTliNDAtMzgwNmU2N2MwODkxOnVjUGprYTV0bnRCMktxc1A=");
+            .headers(headers -> {
+                headers.basicAuth("09515159-7237-4370-9b40-3806e67c0891", "ucPjka5tntB2KqsP");
+                headers.contentType(ContentType.FORM_URLENCODED);
+            });
 
         return restClient.requestObjectAsync(entity, TokenResponse.class);
     }

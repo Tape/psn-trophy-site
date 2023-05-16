@@ -52,7 +52,7 @@ abstract class AbstractApiClient {
     protected <T> CompletableFuture<T> get(@NonNull String path, Class<T> responseType) {
         final var entity = RequestEntity.get(URI.create(urlBase() + path));
         if (accessToken != null) {
-            entity.header("Authorization", "Bearer " + accessToken);
+            entity.headers(headers -> headers.set("Authorization", "Bearer " + accessToken));
         }
 
         return restClient.requestObjectAsync(entity, responseType);

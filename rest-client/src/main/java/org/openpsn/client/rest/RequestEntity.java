@@ -6,10 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.function.Consumer;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -17,7 +14,7 @@ public class RequestEntity<T> {
     private final URI uri;
     private final Method method;
     private final T payload;
-    private final Map<String, List<String>> headers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private final Headers headers = new Headers();
 
 
     /**
@@ -63,32 +60,12 @@ public class RequestEntity<T> {
     }
 
     /**
-     * Adds a new header to the entity. Repeats of the same header will be added as another value.
+     * allows the user to provide a consumer to manipulate the request entity headers.
      *
-     * @param name  is the name of the header, such as Content-Type.
-     * @param value is the value of the header, such as application/json.
+     * @param consumer is the consumer function.
      */
-    public RequestEntity<T> header(@NonNull String name, @NonNull String value) {
-        headers.computeIfAbsent(name, k -> new ArrayList<>()).add(value);
-        return this;
-    }
-
-    /**
-     * Utility method that sets the Content-Type header using a standard set of available content types.
-     */
-    public RequestEntity<T> contentType(@NonNull ContentType contentType) {
-        return setHeader("Content-Type", contentType.getValue());
-    }
-
-    /**
-     * Adds a new header to the entity. Replaces the existing header value if it exists. This will also lock down the
-     * header and make it immutable so that any future calls to append new values will fail.
-     *
-     * @param name  is the name of the header, such as Content-Type.
-     * @param value is the value of the header, such as application/json.
-     */
-    public RequestEntity<T> setHeader(@NonNull String name, @NonNull String value) {
-        headers.put(name, List.of(value));
+    public RequestEntity<T> headers(Consumer<Headers> consumer) {
+        consumer.accept(headers);
         return this;
     }
 }

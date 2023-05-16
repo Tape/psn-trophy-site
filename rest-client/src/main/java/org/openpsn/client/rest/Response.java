@@ -1,6 +1,5 @@
 package org.openpsn.client.rest;
 
-import java.net.http.HttpHeaders;
 import java.util.Optional;
 
 public interface Response {
@@ -12,7 +11,7 @@ public interface Response {
     /**
      * The response headers.
      */
-    HttpHeaders headers();
+    Headers headers();
 
     /**
      * Deserializes the body into a type as long as the content type is supported (currently only JSON).

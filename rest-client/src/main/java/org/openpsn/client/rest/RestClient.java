@@ -9,7 +9,6 @@ import org.openpsn.client.rest.exception.StatusCodeException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.http.HttpClient;
-import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Optional;
@@ -106,7 +105,7 @@ public class RestClient {
         final byte[] bytes;
         try {
             bytes = objectMapper.writeValueAsBytes(payload);
-            entity.contentType(ContentType.APPLICATION_JSON);
+            entity.headers(headers -> headers.contentType(ContentType.APPLICATION_JSON));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -140,12 +139,12 @@ public class RestClient {
 
         @Override
         public Optional<String> contentType() {
-            return response.headers().firstValue("Content-Type");
+            return headers().contentType();
         }
 
         @Override
-        public HttpHeaders headers() {
-            return response.headers();
+        public Headers headers() {
+            return Headers.of(response.headers());
         }
 
         @Override

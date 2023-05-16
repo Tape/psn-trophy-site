@@ -10,8 +10,11 @@ public class PsnClient {
         this.restClient = restClient;
     }
 
-    public PsnTrophyClient trophies() {
-        // TODO: Figure out how to handle the auth headers
-        return new PsnTrophyClient(restClient, null);
+    public PsnAuthClient auth() {
+        return new PsnAuthClient(restClient);
+    }
+
+    public PsnTrophyClient trophies(@NonNull String accessToken) {
+        return new PsnTrophyClient(restClient, accessToken);
     }
 }
