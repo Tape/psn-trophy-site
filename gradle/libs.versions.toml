@@ -1,19 +1,22 @@
 [versions]
 assertj = "3.24.2"
-jackson = "2.15.0"
+jackson = "2.15.1"
 junit = "5.9.3"
 lombok = "1.18.26"
 mockito = "5.3.1"
 mockserver = "5.15.0"
-testcontainers = "1.18.0"
+testcontainers = "1.18.1"
 
 [libraries]
+# Compile-time libraries
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# Jackson
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
-lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 
-# JUnit
+# Unit testing
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
