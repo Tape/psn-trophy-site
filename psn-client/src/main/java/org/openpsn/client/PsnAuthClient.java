@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import static org.openpsn.client.rest.util.EncodingUtils.urlDecodeMap;
+import static org.openpsn.client.rest.util.EncodingUtils.urlEncodeMap;
+
 public class PsnAuthClient extends AbstractApiClient {
     PsnAuthClient(@NonNull RestClient restClient) {
         super(restClient);
@@ -37,7 +40,12 @@ public class PsnAuthClient extends AbstractApiClient {
                     .orElseThrow(() -> new IllegalArgumentException("Missing 'Location' header"));
 
                 final var queryParams = urlDecodeMap(location.getQuery());
-                return Objects.requireNonNull(queryParams.get("code"));
+                final var code = queryParams.get("code");
+                if (code == null || code.isEmpty()) {
+                    throw new NullPointerException("Missing code");
+                }
+
+                return Objects.requireNonNull(code.get(0));
             });
     }
 
