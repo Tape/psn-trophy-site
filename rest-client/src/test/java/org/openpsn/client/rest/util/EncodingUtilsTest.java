@@ -2,8 +2,8 @@ package org.openpsn.client.rest.util;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.openpsn.client.rest.util.EncodingUtils.*;
@@ -27,9 +27,11 @@ class EncodingUtilsTest {
 
     @Test
     void urlEncodeMap_should_encodeToString() {
-        final var map = Map.of(
-            "test", "test",
-            "test 2", "test 2");
+        // Use LHM to guarantee insertion order for encoding
+        final var map = new LinkedHashMap<String, String>() {{
+            put("test", "test");
+            put("test 2", "test 2");
+        }};
 
         assertThat(urlEncodeMap(map))
             .isEqualTo("test=test&test+2=test+2");
@@ -37,9 +39,11 @@ class EncodingUtilsTest {
 
     @Test
     void urlEncodeMultiMap_should_encodeToString() {
-        final var map = Map.of(
-            "test", List.of("test"),
-            "test 2", List.of("test 2", "test 3"));
+        // Use LHM to guarantee insertion order for encoding
+        final var map = new LinkedHashMap<String, List<String>>() {{
+            put("test", List.of("test"));
+            put("test 2", List.of("test 2", "test 3"));
+        }};
 
         assertThat(urlEncodeMultiMap(map))
             .isEqualTo("test=test&test+2=test+2&test+2=test+3");
