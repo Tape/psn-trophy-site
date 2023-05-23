@@ -25,7 +25,7 @@ public class EncodingUtils {
     /**
      * Url decodes a string into a map containing multiple values for each key.
      */
-    public static Map<String, List<String>> urlDecodeMap(@NonNull String params) {
+    public static MultiValueMap<String, String> urlDecodeMap(@NonNull String params) {
         return Stream.of(params.split("&"))
             .map(it -> it.split("="))
             .collect(Collectors.toMap(
@@ -40,7 +40,8 @@ public class EncodingUtils {
                 (existingValues, newValues) -> {
                     existingValues.addAll(newValues);
                     return existingValues;
-                }
+                },
+                MultiValueMap::new
             ));
     }
 
@@ -64,7 +65,7 @@ public class EncodingUtils {
     /**
      * Url encodes a map containing multiple values for each key.
      */
-    public static String urlEncodeMultiMap(@NonNull Map<String, List<String>> params) {
+    public static String urlEncodeMultiValueMap(@NonNull Map<String, List<String>> params) {
         return params.entrySet()
             .stream()
             .flatMap(pair -> pair.getValue().stream()

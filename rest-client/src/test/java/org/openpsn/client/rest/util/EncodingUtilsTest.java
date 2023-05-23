@@ -45,7 +45,7 @@ class EncodingUtilsTest {
             put("test 2", List.of("test 2", "test 3"));
         }};
 
-        assertThat(urlEncodeMultiMap(map))
+        assertThat(urlEncodeMultiValueMap(map))
             .isEqualTo("test=test&test+2=test+2&test+2=test+3");
     }
 }
