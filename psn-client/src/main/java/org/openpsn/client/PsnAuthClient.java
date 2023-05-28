@@ -16,10 +16,20 @@ import static org.openpsn.client.rest.util.EncodingUtils.urlDecodeMap;
 import static org.openpsn.client.rest.util.EncodingUtils.urlEncodeMap;
 
 public class PsnAuthClient extends AbstractApiClient {
+    /**
+     * Creates an authentication client for use exchanging user credentials for tokens.
+     *
+     * @param restClient is the shared REST client.
+     */
     PsnAuthClient(@NonNull RestClient restClient) {
         super(restClient);
     }
 
+    /**
+     * Fetches an access code from the authentication service which is used to exchange for access tokens.
+     *
+     * @param npSso is the npsso value.
+     */
     public CompletableFuture<String> getAccessCode(@NonNull String npSso) {
         final var query = urlEncodeMap(Map.of(
             "access_type", "offline",
@@ -49,6 +59,12 @@ public class PsnAuthClient extends AbstractApiClient {
             });
     }
 
+    /**
+     * Fetches access tokens for the given access code. This also includes user details via the id token, the refresh
+     * token, expiry and scope information.
+     *
+     * @param code is the access code.
+     */
     public CompletableFuture<TokenResponse> getAccessToken(@NonNull String code) {
         final var body = urlEncodeMap(Map.of(
             "code", code,
