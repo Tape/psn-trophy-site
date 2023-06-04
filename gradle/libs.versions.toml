@@ -1,20 +1,31 @@
 [versions]
 assertj = "3.24.2"
 jackson = "2.15.1"
+jooby = "3.0.0.M9"
 junit = "5.9.3"
 lombok = "1.18.26"
 mockito = "5.3.1"
 mockserver = "5.15.0"
+postgresql = "42.6.0"
 testcontainers = "1.18.1"
 
 [libraries]
 # Compile-time libraries
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 
+# Drivers
+postgres = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+
 # Jackson
 jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+
+# Jooby
+jooby-core = { module = "io.jooby:jooby", version.ref = "jooby" }
+jooby-flyway = { module = "io.jooby:jooby-flyway", version.ref = "jooby" }
+jooby-hikari = { module = "io.jooby:jooby-hikari", version.ref = "jooby" }
+jooby-undertow = { module = "io.jooby:jooby-undertow", version.ref = "jooby" }
 
 # Unit testing
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }

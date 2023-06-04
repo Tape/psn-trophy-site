@@ -1,0 +1,12 @@
+plugins {
+    id 'openpsn-java'
+}
+
+dependencies {
+    implementation libs.jooby.core
+    implementation libs.jooby.flyway
+    implementation libs.jooby.hikari
+    implementation libs.jooby.undertow
+
+    runtimeOnly libs.postgres
+}
