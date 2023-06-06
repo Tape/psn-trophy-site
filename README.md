@@ -32,6 +32,8 @@ infrastructure costs.
 - Redis
   - Fast cache
   - Session management
+- Argon2
+  - Strong credential hashing
 
 ### Backend for Frontend
 
