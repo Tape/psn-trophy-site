@@ -1,0 +1,55 @@
+:root {
+  --theme-darkest: #18122b;
+  --theme-dark: #393053;
+  --theme-light: #443c68;
+  --theme-lightest: #635985;
+
+  --theme-text-color: #e6edf3;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* -- Layout components -- */
+html {
+  color-scheme: light dark;
+}
+
+body {
+  font-family: system-ui;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--theme-text-color);
+  background: var(--theme-darkest);
+}
+
+main {
+  width: min(100ch, 100% - 4rem);
+  margin-inline: auto;
+}
+
+/* -- General components -- */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* -- Form components -- */
+button,
+input {
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--theme-text-color);
+}
+
+button {
+  cursor: pointer;
+}
+
+input[type="password"],
+input[type="text"] {
+  padding: 0.2rem;
+}

@@ -1,2 +1,5 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<h1>OpenPSN</h1>
+<p>This page is a simple placeholder for right now.</p>
+<p>
+  Please <a href="/login">log in</a> or <a href="/register">register</a>.
+</p>
