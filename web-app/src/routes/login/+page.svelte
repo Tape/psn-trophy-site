@@ -5,6 +5,10 @@
   export let form: ActionData;
 </script>
 
+{#if form?.success}
+  <p>Successfully logged in!</p>
+{/if}
+
 {#if data?.user}
   <h1>Hello, {data.user.id}</h1>
   <p>You're already logged in!</p>
