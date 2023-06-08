@@ -7,6 +7,12 @@
   "pluginSearchDirs": ["."],
   "overrides": [
     {
+      "files": ["*.css", "*.html"],
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
       "files": "*.svelte",
       "options": {
         "parser": "svelte"
