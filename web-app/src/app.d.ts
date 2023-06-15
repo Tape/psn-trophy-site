@@ -9,7 +9,7 @@ declare global {
     interface Error {}
 
     interface Locals {
-      user: User;
+      user: User | null;
     }
 
     interface PageData {}
