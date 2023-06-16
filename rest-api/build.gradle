@@ -3,10 +3,16 @@ plugins {
 }
 
 dependencies {
+    // Jooby modules
     implementation libs.jooby.core
     implementation libs.jooby.flyway
     implementation libs.jooby.hikari
+    implementation libs.jooby.pac4j
     implementation libs.jooby.undertow
 
+    // Drivers
     runtimeOnly libs.postgres
+
+    // Pac4j modules
+    implementation libs.pac4j.jwt
 }

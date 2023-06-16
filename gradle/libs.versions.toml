@@ -6,6 +6,7 @@ junit = "5.9.3"
 lombok = "1.18.26"
 mockito = "5.3.1"
 mockserver = "5.15.0"
+pac4j = "5.7.0"
 postgresql = "42.6.0"
 testcontainers = "1.18.1"
 
@@ -25,7 +26,11 @@ jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-dat
 jooby-core = { module = "io.jooby:jooby", version.ref = "jooby" }
 jooby-flyway = { module = "io.jooby:jooby-flyway", version.ref = "jooby" }
 jooby-hikari = { module = "io.jooby:jooby-hikari", version.ref = "jooby" }
+jooby-pac4j = { module = "io.jooby:jooby-pac4j", version.ref = "jooby" }
 jooby-undertow = { module = "io.jooby:jooby-undertow", version.ref = "jooby" }
+
+# Pac4j
+pac4j-jwt = { module = "org.pac4j:pac4j-jwt", version.ref = "pac4j" }
 
 # Unit testing
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
