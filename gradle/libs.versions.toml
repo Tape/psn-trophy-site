@@ -23,9 +23,11 @@ jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", ver
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
 
 # Jooby
+jooby-apt = { module = "io.jooby:jooby-apt", version.ref = "jooby" }
 jooby-core = { module = "io.jooby:jooby", version.ref = "jooby" }
 jooby-flyway = { module = "io.jooby:jooby-flyway", version.ref = "jooby" }
 jooby-hikari = { module = "io.jooby:jooby-hikari", version.ref = "jooby" }
+jooby-jackson = { module = "io.jooby:jooby-jackson", version.ref = "jooby" }
 jooby-pac4j = { module = "io.jooby:jooby-pac4j", version.ref = "jooby" }
 jooby-undertow = { module = "io.jooby:jooby-undertow", version.ref = "jooby" }
 
