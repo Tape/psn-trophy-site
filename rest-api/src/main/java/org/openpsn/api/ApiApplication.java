@@ -11,8 +11,6 @@ import org.pac4j.http.client.direct.DirectBearerAuthClient;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 import org.pac4j.jwt.credentials.authenticator.JwtAuthenticator;
 
-import java.util.Arrays;
-
 public class ApiApplication extends Jooby {
     public ApiApplication() {
         // (De)serialization
@@ -22,21 +20,22 @@ public class ApiApplication extends Jooby {
         install(new HikariModule());
         install(new FlywayModule());
 
-        // Please don't actually do this
-        final var saltChars = new char[256];
-        Arrays.fill(saltChars, 'a');
-        final var salt = new String(saltChars);
-        final var signatureConfiguration = new SecretSignatureConfiguration(salt);
+        // API endpoints for authentication
+        mvc(new AuthController(secretSignatureConfiguration()));
 
+        // Protect API endpoints behind a bearer JWT
         install(new Pac4jModule()
             .client("/api/*", conf -> {
-                final var authenticator = new JwtAuthenticator(signatureConfiguration);
+                final var authenticator = new JwtAuthenticator(secretSignatureConfiguration());
                 return new DirectBearerAuthClient(authenticator);
             })
         );
 
-        mvc(new AuthController(signatureConfiguration));
-
         get("/api/hello", ctx -> ctx.<CommonProfile>getUser().getId());
+    }
+
+    private SecretSignatureConfiguration secretSignatureConfiguration() {
+        final var salt = getConfig().getString("jwt.salt");
+        return new SecretSignatureConfiguration(salt);
     }
 }
