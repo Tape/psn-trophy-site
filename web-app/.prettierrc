@@ -12,7 +12,7 @@
       }
     },
     {
-      "files": "*.svelte",
+      "files": ["*.svelte"],
       "options": {
         "parser": "svelte"
       }
