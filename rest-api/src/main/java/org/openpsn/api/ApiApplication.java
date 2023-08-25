@@ -21,7 +21,7 @@ import javax.inject.Singleton;
 
 public class ApiApplication extends Jooby {
     public ApiApplication() {
-        final var dagger = DaggerApiApplication_ControllerComponent.builder()
+        final var dagger = DaggerApiApplication_RestComponent.builder()
             .apiApplicationModule(new ApiApplicationModule(this))
             .build();
 
@@ -50,8 +50,8 @@ public class ApiApplication extends Jooby {
 
         @Provides
         @Singleton
-        public DirectClient directClient() {
-            final var authenticator = new JwtAuthenticator(signatureConfiguration());
+        public DirectClient directClient(SignatureConfiguration signatureConfiguration) {
+            final var authenticator = new JwtAuthenticator(signatureConfiguration);
             return new DirectBearerAuthClient(authenticator);
         }
 
@@ -65,7 +65,7 @@ public class ApiApplication extends Jooby {
 
     @Component(modules = {ApiApplicationModule.class})
     @Singleton
-    interface ControllerComponent {
+    interface RestComponent {
         DirectClient apiAuthClient();
 
         AuthController authController();
