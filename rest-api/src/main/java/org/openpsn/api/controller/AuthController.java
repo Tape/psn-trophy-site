@@ -2,16 +2,17 @@ package org.openpsn.api.controller;
 
 import io.jooby.annotation.POST;
 import io.jooby.annotation.Path;
+import lombok.RequiredArgsConstructor;
 import org.openpsn.api.model.AuthTokens;
 import org.openpsn.api.service.AuthService;
-import org.pac4j.jwt.config.signature.SignatureConfiguration;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+@Singleton
 public class AuthController {
     private final AuthService authService;
-
-    public AuthController(SignatureConfiguration signatureConfiguration) {
-        this.authService = new AuthService(signatureConfiguration);
-    }
 
     @POST
     @Path("/token")

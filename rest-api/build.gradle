@@ -12,6 +12,10 @@ dependencies {
     implementation libs.jooby.pac4j
     implementation libs.jooby.undertow
 
+    // Dagger
+    implementation libs.dagger.core
+    annotationProcessor libs.dagger.compiler
+
     // Drivers
     runtimeOnly libs.postgres
 

@@ -5,11 +5,13 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.jwt.config.signature.SignatureConfiguration;
 import org.pac4j.jwt.profile.JwtGenerator;
 
+import javax.inject.Inject;
 import java.util.UUID;
 
 public class AuthService {
     private final JwtGenerator jwtGenerator;
 
+    @Inject
     public AuthService(SignatureConfiguration signatureConfiguration) {
         this.jwtGenerator = new JwtGenerator(signatureConfiguration);
     }

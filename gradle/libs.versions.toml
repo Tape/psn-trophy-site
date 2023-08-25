@@ -1,5 +1,6 @@
 [versions]
 assertj = "3.24.2"
+dagger = "2.47"
 jackson = "2.15.2"
 jooby = "3.0.0"
 junit = "5.9.3"
@@ -13,6 +14,10 @@ testcontainers = "1.18.3"
 [libraries]
 # Compile-time libraries
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# Dagger
+dagger-core = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
 # Drivers
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
