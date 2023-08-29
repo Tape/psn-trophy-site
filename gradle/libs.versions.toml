@@ -2,7 +2,7 @@
 assertj = "3.24.2"
 dagger = "2.47"
 jackson = "2.15.2"
-jooby = "3.0.0"
+jooby = "3.0.5"
 junit = "5.9.3"
 lombok = "1.18.28"
 mockito = "5.4.0"
