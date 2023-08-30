@@ -34,6 +34,7 @@ jooby-flyway = { module = "io.jooby:jooby-flyway", version.ref = "jooby" }
 jooby-hikari = { module = "io.jooby:jooby-hikari", version.ref = "jooby" }
 jooby-jackson = { module = "io.jooby:jooby-jackson", version.ref = "jooby" }
 jooby-pac4j = { module = "io.jooby:jooby-pac4j", version.ref = "jooby" }
+jooby-test = { module = "io.jooby:jooby-test", version.ref = "jooby" }
 jooby-undertow = { module = "io.jooby:jooby-undertow", version.ref = "jooby" }
 
 # Pac4j
@@ -51,6 +52,7 @@ mockito-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = 
 mockserver-client = { module = "org.mock-server:mockserver-client-java", version.ref = "mockserver" }
 testcontainers-core = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-mockserver = { module = "org.testcontainers:mockserver", version.ref = "testcontainers" }
+testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "testcontainers" }
 
 [bundles]
 junit = ["assertj-core", "junit-jupiter"]
