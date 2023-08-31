@@ -9,6 +9,7 @@ mockito = "5.4.0"
 mockserver = "5.15.0"
 pac4j = "5.7.1"
 postgresql = "42.6.0"
+restassured = "5.3.1"
 testcontainers = "1.18.3"
 
 [libraries]
@@ -34,11 +35,13 @@ jooby-flyway = { module = "io.jooby:jooby-flyway", version.ref = "jooby" }
 jooby-hikari = { module = "io.jooby:jooby-hikari", version.ref = "jooby" }
 jooby-jackson = { module = "io.jooby:jooby-jackson", version.ref = "jooby" }
 jooby-pac4j = { module = "io.jooby:jooby-pac4j", version.ref = "jooby" }
-jooby-test = { module = "io.jooby:jooby-test", version.ref = "jooby" }
 jooby-undertow = { module = "io.jooby:jooby-undertow", version.ref = "jooby" }
 
 # Pac4j
 pac4j-jwt = { module = "org.pac4j:pac4j-jwt", version.ref = "pac4j" }
+
+# Integration testing
+restassured = { module = "io.rest-assured:rest-assured", version.ref="restassured" }
 
 # Unit testing
 assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }

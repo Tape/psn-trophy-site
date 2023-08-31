@@ -1,10 +1,13 @@
 package org.openpsn.api;
 
-import io.jooby.test.MockRouter;
+import io.jooby.ExecutionMode;
+import io.jooby.Jooby;
+import io.jooby.Server;
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.extension.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-public class IntegrationTestExtension implements BeforeAllCallback, ParameterResolver {
+public class IntegrationTestExtension implements BeforeAllCallback, AfterAllCallback, ParameterResolver {
     private static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER =
         new PostgreSQLContainer<>("postgres:15")
             .withDatabaseName("openpsn")
@@ -15,30 +18,48 @@ public class IntegrationTestExtension implements BeforeAllCallback, ParameterRes
         POSTGRESQL_CONTAINER.start();
 
         System.setProperty("db.url", POSTGRESQL_CONTAINER.getJdbcUrl());
+        System.setProperty("jooby.useShutdownHook", "false");
     }
-
-    private MockRouter router;
 
     @Override
     public void beforeAll(ExtensionContext extensionContext) {
-        router = new MockRouter(new ApiApplication());
-        router.setFullExecution(true);
+        final var application = createApplication(extensionContext);
+        final var server = application.start();
+
+        final var store = getStore(extensionContext);
+        store.put("application", application);
+        store.put("server", server);
+
+        RestAssured.baseURI = "http://localhost:" + server.getOptions().getPort();
+    }
+
+    @Override
+    public void afterAll(ExtensionContext extensionContext) {
+        final var server = getStore(extensionContext).get("server", Server.class);
+        if (server != null) {
+            server.stop();
+        }
     }
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return MockRouter.class.equals(parameterContext.getParameter().getType());
+        return false;
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        if (MockRouter.class.equals(parameterContext.getParameter().getType())) {
-            return router;
-        }
+        return null;
+    }
 
-        throw new ParameterResolutionException(String.format(
-            "Parameter %s of type %s is not supported",
-            parameterContext.getParameter().getName(),
-            parameterContext.getParameter().getType()));
+    private Jooby createApplication(ExtensionContext extensionContext) {
+        return Jooby.createApp(
+            new String[]{"test"},
+            ExecutionMode.DEFAULT,
+            ApiApplication::new);
+    }
+
+    private ExtensionContext.Store getStore(ExtensionContext extensionContext) {
+        final var namespace = ExtensionContext.Namespace.create(extensionContext.getRequiredTestClass());
+        return extensionContext.getStore(namespace);
     }
 }

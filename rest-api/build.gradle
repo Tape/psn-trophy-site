@@ -11,8 +11,6 @@ dependencies {
     implementation libs.jooby.jackson
     implementation libs.jooby.pac4j
     implementation libs.jooby.undertow
-    // Testing
-    integrationTestImplementation libs.jooby.test
 
     // Dagger
     implementation libs.dagger.core
@@ -25,7 +23,8 @@ dependencies {
     // Pac4j modules
     implementation libs.pac4j.jwt
 
-    // Test containers
+    // Integration testing
+    integrationTestImplementation libs.restassured
     integrationTestImplementation libs.testcontainers.core
     integrationTestImplementation libs.testcontainers.postgresql
 }
