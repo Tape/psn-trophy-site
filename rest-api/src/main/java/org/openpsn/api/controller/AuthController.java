@@ -9,6 +9,7 @@ import org.openpsn.api.service.AuthService;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+@Path("/auth")
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 @Singleton
 public class AuthController {

@@ -16,7 +16,7 @@ public class AuthControllerIntegrationTest {
         given()
             .contentType(ContentType.JSON)
             .body(new AuthController.TokenRequest("test", "pass"))
-            .post("/token")
+            .post("/auth/token")
             .then()
             .statusCode(equalTo(200))
             .body("accessToken", notNullValue())
