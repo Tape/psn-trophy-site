@@ -3,6 +3,7 @@ package org.openpsn.api;
 import io.jooby.ExecutionMode;
 import io.jooby.Jooby;
 import io.jooby.Server;
+import io.jooby.SneakyThrows;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.extension.*;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -18,6 +19,9 @@ public class IntegrationTestExtension implements BeforeAllCallback, AfterAllCall
         POSTGRESQL_CONTAINER.start();
 
         System.setProperty("db.url", POSTGRESQL_CONTAINER.getJdbcUrl());
+        System.setProperty("db.user", POSTGRESQL_CONTAINER.getUsername());
+        System.setProperty("db.password", POSTGRESQL_CONTAINER.getPassword());
+
         System.setProperty("jooby.useShutdownHook", "false");
     }
 
@@ -30,7 +34,7 @@ public class IntegrationTestExtension implements BeforeAllCallback, AfterAllCall
         store.put("application", application);
         store.put("server", server);
 
-        RestAssured.baseURI = "http://localhost:" + server.getOptions().getPort();
+        RestAssured.baseURI = String.format("http://localhost:%d", server.getOptions().getPort());
     }
 
     @Override
@@ -52,10 +56,12 @@ public class IntegrationTestExtension implements BeforeAllCallback, AfterAllCall
     }
 
     private Jooby createApplication(ExtensionContext extensionContext) {
+        final var annotation = extensionContext.getRequiredTestClass().getAnnotation(IntegrationTest.class);
+
         return Jooby.createApp(
-            new String[]{"test"},
+            new String[]{annotation.environment()},
             ExecutionMode.DEFAULT,
-            ApiApplication::new);
+            SneakyThrows.throwingSupplier(() -> annotation.value().getConstructor().newInstance()));
     }
 
     private ExtensionContext.Store getStore(ExtensionContext extensionContext) {
