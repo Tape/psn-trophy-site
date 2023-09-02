@@ -35,6 +35,7 @@ public class IntegrationTestExtension implements BeforeAllCallback, AfterAllCall
         store.put("server", server);
 
         RestAssured.baseURI = String.format("http://localhost:%d", server.getOptions().getPort());
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
     @Override
