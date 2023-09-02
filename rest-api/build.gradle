@@ -16,6 +16,9 @@ dependencies {
     implementation libs.dagger.core
     annotationProcessor libs.dagger.compiler
 
+    // Data
+    implementation libs.dbutils
+
     // Drivers
     runtimeOnly libs.postgres
     integrationTestRuntimeOnly libs.postgres

@@ -1,6 +1,7 @@
 [versions]
 assertj = "3.24.2"
 dagger = "2.47"
+dbutils = "1.8.0"
 jackson = "2.15.2"
 jooby = "3.0.5"
 junit = "5.9.3"
@@ -19,6 +20,9 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 # Dagger
 dagger-core = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+
+# Data
+dbutils = { module = "commons-dbutils:commons-dbutils", version.ref = "dbutils" }
 
 # Drivers
 postgres = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
