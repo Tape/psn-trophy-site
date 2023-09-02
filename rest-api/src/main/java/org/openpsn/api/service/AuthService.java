@@ -1,5 +1,8 @@
 package org.openpsn.api.service;
 
+import org.openpsn.api.dao.UserDao;
+import org.openpsn.api.dao.jdbc.UserDaoJdbc;
+import org.openpsn.api.exception.auth.BadCredentialsException;
 import org.openpsn.api.model.AuthTokens;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.jwt.config.signature.SignatureConfiguration;
@@ -10,20 +13,26 @@ import java.util.UUID;
 
 public class AuthService {
     private final JwtGenerator jwtGenerator;
+    private final UserDao userDao;
 
     @Inject
-    public AuthService(SignatureConfiguration signatureConfiguration) {
+    public AuthService(SignatureConfiguration signatureConfiguration, UserDaoJdbc userDao) {
         this.jwtGenerator = new JwtGenerator(signatureConfiguration);
+        this.userDao = userDao;
     }
 
-    public AuthTokens authenticate(String username, String password) {
-        final var user = new CommonProfile();
-        user.setId(username);
+    public AuthTokens authenticate(String psnName, String password) throws BadCredentialsException {
+        if (!userDao.authenticate(psnName, password)) {
+            throw new BadCredentialsException();
+        }
 
+        final var user = userDao.getUser(psnName);
+        final var profile = new CommonProfile();
+        profile.setId(user.id());
+
+        final var accessToken = jwtGenerator.generate(profile);
         final var refreshToken = UUID.randomUUID().toString();
-        // TODO: actually interact with the DB. Hash password, refreshToken
 
-        final var accessToken = jwtGenerator.generate(user);
         return new AuthTokens(accessToken, refreshToken);
     }
 }

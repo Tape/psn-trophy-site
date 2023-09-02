@@ -5,8 +5,11 @@ import io.jooby.Jooby;
 import io.jooby.Server;
 import io.jooby.SneakyThrows;
 import io.restassured.RestAssured;
+import org.apache.commons.dbutils.QueryRunner;
 import org.junit.jupiter.api.extension.*;
 import org.testcontainers.containers.PostgreSQLContainer;
+
+import javax.sql.DataSource;
 
 public class IntegrationTestExtension implements BeforeAllCallback, AfterAllCallback, ParameterResolver {
     private static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER =
@@ -48,12 +51,13 @@ public class IntegrationTestExtension implements BeforeAllCallback, AfterAllCall
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return false;
+        return parameterContext.getParameter().getType() == QueryRunner.class;
     }
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-        return null;
+        final var application = getStore(extensionContext).get("application", Jooby.class);
+        return new QueryRunner(application.require(DataSource.class));
     }
 
     private Jooby createApplication(ExtensionContext extensionContext) {
