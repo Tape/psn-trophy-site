@@ -22,11 +22,9 @@ public class AuthService {
     }
 
     public AuthTokens authenticate(String psnName, String password) throws BadCredentialsException {
-        if (!userDao.authenticate(psnName, password)) {
-            throw new BadCredentialsException();
-        }
+        final var user = userDao.authenticate(psnName, password)
+            .orElseThrow(BadCredentialsException::new);
 
-        final var user = userDao.getUser(psnName);
         final var profile = new CommonProfile();
         profile.setId(user.id());
 
