@@ -8,6 +8,7 @@ import io.jooby.jackson.JacksonModule;
 import io.jooby.pac4j.Pac4jModule;
 import org.openpsn.api.controller.AuthController;
 import org.openpsn.api.module.ApplicationModule;
+import org.openpsn.api.module.DataAccessModule;
 import org.openpsn.api.module.SecurityModule;
 import org.pac4j.core.client.DirectClient;
 import org.pac4j.core.profile.CommonProfile;
@@ -40,6 +41,7 @@ public class ApiApplication extends Jooby {
 
     @Component(modules = {
         ApplicationModule.class,
+        DataAccessModule.class,
         SecurityModule.class,
     })
     @Singleton

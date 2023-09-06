@@ -1,7 +1,6 @@
 package org.openpsn.api.service;
 
 import org.openpsn.api.dao.UserDao;
-import org.openpsn.api.dao.jdbc.UserDaoJdbc;
 import org.openpsn.api.exception.auth.BadCredentialsException;
 import org.openpsn.api.model.AuthTokens;
 import org.pac4j.core.profile.CommonProfile;
@@ -16,7 +15,7 @@ public class AuthService {
     private final UserDao userDao;
 
     @Inject
-    public AuthService(SignatureConfiguration signatureConfiguration, UserDaoJdbc userDao) {
+    public AuthService(SignatureConfiguration signatureConfiguration, UserDao userDao) {
         this.jwtGenerator = new JwtGenerator(signatureConfiguration);
         this.userDao = userDao;
     }
