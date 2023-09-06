@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public record User(
     String id,
-    String psnId,
+    String psnName,
     LocalDateTime createdAt,
     LocalDateTime updatedAt
 ) {
