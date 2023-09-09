@@ -1,17 +1,17 @@
 [versions]
 assertj = "3.24.2"
-dagger = "2.47"
+dagger = "2.48"
 dbutils = "1.8.0"
 jackson = "2.15.2"
 jooby = "3.0.5"
-junit = "5.9.3"
+junit = "5.10.0"
 lombok = "1.18.28"
-mockito = "5.4.0"
+mockito = "5.5.0"
 mockserver = "5.15.0"
 pac4j = "5.7.1"
 postgresql = "42.6.0"
-restassured = "5.3.1"
-testcontainers = "1.18.3"
+restassured = "5.3.2"
+testcontainers = "1.19.0"
 
 [libraries]
 # Compile-time libraries
