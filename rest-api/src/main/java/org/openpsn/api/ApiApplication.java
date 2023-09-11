@@ -7,11 +7,11 @@ import io.jooby.hikari.HikariModule;
 import io.jooby.jackson.JacksonModule;
 import io.jooby.pac4j.Pac4jModule;
 import org.openpsn.api.controller.AuthController;
+import org.openpsn.api.controller.UserController;
 import org.openpsn.api.module.ApplicationModule;
 import org.openpsn.api.module.DataAccessModule;
 import org.openpsn.api.module.SecurityModule;
 import org.pac4j.core.client.DirectClient;
-import org.pac4j.core.profile.CommonProfile;
 
 import javax.inject.Singleton;
 
@@ -36,7 +36,7 @@ public class ApiApplication extends Jooby {
             .client("/api/*", conf -> dagger.apiAuthClient());
         install(pac4j);
 
-        get("/api/hello", ctx -> ctx.<CommonProfile>getUser().getId());
+        mvc(dagger.userController());
     }
 
     @Component(modules = {
@@ -49,5 +49,7 @@ public class ApiApplication extends Jooby {
         DirectClient apiAuthClient();
 
         AuthController authController();
+
+        UserController userController();
     }
 }

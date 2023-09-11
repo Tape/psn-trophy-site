@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface UserDao {
     Optional<User> authenticate(String psnName, String password);
 
-    User getUser(String psnName);
+    Optional<User> getUser(String psnName);
 }

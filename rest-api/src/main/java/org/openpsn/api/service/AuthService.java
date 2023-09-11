@@ -8,8 +8,10 @@ import org.pac4j.jwt.config.signature.SignatureConfiguration;
 import org.pac4j.jwt.profile.JwtGenerator;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.UUID;
 
+@Singleton
 public class AuthService {
     private final JwtGenerator jwtGenerator;
     private final UserDao userDao;
@@ -26,6 +28,7 @@ public class AuthService {
 
         final var profile = new CommonProfile();
         profile.setId(user.id());
+        profile.addAttribute("username", psnName);
 
         final var accessToken = jwtGenerator.generate(profile);
         final var refreshToken = UUID.randomUUID().toString();

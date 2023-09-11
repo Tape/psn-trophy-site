@@ -5,7 +5,6 @@ import lombok.SneakyThrows;
 import org.apache.commons.dbutils.QueryRunner;
 import org.openpsn.api.dao.UserDao;
 import org.openpsn.api.db.RecordHandler;
-import org.openpsn.api.exception.auth.UserDoesNotExistException;
 import org.openpsn.api.model.User;
 
 import javax.inject.Inject;
@@ -45,8 +44,7 @@ public class UserDaoJdbc implements UserDao {
 
     @Override
     @SneakyThrows
-    public User getUser(String psnName) {
-        final var maybeUser = queryRunner.query(GET_USER_QUERY, USER_HANDLER, psnName);
-        return maybeUser.orElseThrow(() -> new UserDoesNotExistException(psnName));
+    public Optional<User> getUser(String psnName) {
+        return queryRunner.query(GET_USER_QUERY, USER_HANDLER, psnName);
     }
 }
