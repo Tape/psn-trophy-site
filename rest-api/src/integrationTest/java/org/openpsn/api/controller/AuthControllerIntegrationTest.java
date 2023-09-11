@@ -13,12 +13,14 @@ import java.sql.SQLException;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.openpsn.api.util.QueryUtils.clearUsers;
+import static org.openpsn.api.util.QueryUtils.createUser;
 
 @IntegrationTest(ApiApplication.class)
 public class AuthControllerIntegrationTest {
     @AfterEach
     public void tearDown(QueryRunner queryRunner) throws SQLException {
-        queryRunner.update("delete from users");
+        clearUsers(queryRunner);
     }
 
     @Test
@@ -58,9 +60,6 @@ public class AuthControllerIntegrationTest {
     }
 
     private void createDefaultUser(QueryRunner queryRunner) throws SQLException {
-        queryRunner.update(
-            "insert into users (psn_name, password) values (?, crypt(?, gen_salt('bf')))",
-            "test",
-            "pass");
+        createUser(queryRunner, "test", "pass");
     }
 }
