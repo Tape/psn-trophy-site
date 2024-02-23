@@ -9,10 +9,20 @@ public class QueryUtils {
         queryRunner.update("delete from users");
     }
 
-    public static void createUser(QueryRunner queryRunner, String username, String password) throws SQLException {
+    public static void createUser(
+        QueryRunner queryRunner,
+        String username,
+        String password,
+        String validationCode
+    ) throws SQLException {
         queryRunner.update(
-            "insert into users (psn_name, password) values (?, crypt(?, gen_salt('bf')))",
+            "insert into users (psn_name, password, validation_code) values (?, crypt(?, gen_salt('bf')), ?)",
             username,
-            password);
+            password,
+            validationCode);
+    }
+
+    public static void createUser(QueryRunner queryRunner, String username, String password) throws SQLException {
+        createUser(queryRunner, username, password, null);
     }
 }

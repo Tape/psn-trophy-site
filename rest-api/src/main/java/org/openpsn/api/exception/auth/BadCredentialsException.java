@@ -5,6 +5,6 @@ import io.jooby.exception.StatusCodeException;
 
 public class BadCredentialsException extends StatusCodeException {
     public BadCredentialsException() {
-        super(StatusCode.FORBIDDEN, "Provided credentials provided are invalid");
+        super(StatusCode.FORBIDDEN, "Credentials provided are invalid");
     }
 }

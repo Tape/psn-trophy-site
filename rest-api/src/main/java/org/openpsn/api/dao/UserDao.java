@@ -8,4 +8,6 @@ public interface UserDao {
     Optional<User> authenticate(String psnName, String password);
 
     Optional<User> getUser(String psnName);
+
+    Optional<String> register(String psnName, String password);
 }

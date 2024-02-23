@@ -9,7 +9,7 @@ public class AuthUtils {
     public static String getAccessToken(String username, String password) {
         return given()
             .contentType(ContentType.JSON)
-            .body(new AuthController.TokenRequest(username, password))
+            .body(new AuthController.AuthenticationRequest(username, password))
             .post("/auth/token")
             .jsonPath()
             .getString("accessToken");

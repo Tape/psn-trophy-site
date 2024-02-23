@@ -7,7 +7,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openpsn.api.dao.UserDao;
 import org.openpsn.api.exception.auth.BadCredentialsException;
+import org.openpsn.api.exception.auth.RegistrationFailedException;
 import org.openpsn.api.model.AuthTokens;
+import org.openpsn.api.model.Registration;
 import org.openpsn.api.model.User;
 import org.pac4j.jwt.config.signature.SecretSignatureConfiguration;
 
@@ -46,5 +48,20 @@ class AuthServiceTest {
     void authenticate_should_throwExceptionIfUserEmpty() {
         assertThatExceptionOfType(BadCredentialsException.class)
             .isThrownBy(() -> authService.authenticate("test", "pass"));
+    }
+
+    @Test
+    void register_should_returnValidationCode() {
+        final var validationCode = "abc123";
+        doReturn(Optional.of(validationCode)).when(userDao).register("test", "pass");
+
+        assertThat(authService.register("test", "pass"))
+            .isEqualTo(new Registration(validationCode));
+    }
+
+    @Test
+    void register_should_throwExceptionIfValidationCodeEmpty() {
+        assertThatExceptionOfType(RegistrationFailedException.class)
+            .isThrownBy(() -> authService.register("test", "pass"));
     }
 }
