@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 public class IntegrationTestExtension implements BeforeAllCallback, AfterAllCallback, ParameterResolver {
     private static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER =
-        new PostgreSQLContainer<>("postgres:15")
+        new PostgreSQLContainer<>("postgres:16")
             .withDatabaseName("openpsn")
             .withUsername("postgres")
             .withPassword("postgres");
